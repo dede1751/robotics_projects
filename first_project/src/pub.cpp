@@ -43,7 +43,10 @@ class pub {
 			float tan_angle = tan(angle);
 
 			if (tan_angle == 0) {
-				x += velocity * time_delta;
+				//current theta is the same as previous theta
+				//there is no osculation circle
+				x += velocity * time_delta * cos(th);
+				y += velocity * time_delta * sin(th);
 			} else {
 				float r = tan_angle / WHEEL_BASE;
 				float new_th = th + velocity * r * time_delta;
