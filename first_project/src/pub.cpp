@@ -26,16 +26,23 @@ class pub {
 		ros::ServiceServer srv;
 		ros::Subscriber sub;
 
+		/// Reset node state to starting parameters set in launchfile
 		void reset_state() {
-			n.getParam("/starting_x", x);
-			n.getParam("/starting_y", y);
-			n.getParam("/starting_th", th);
+			n.getParam("odom/starting_x", x);
+			n.getParam("odom/starting_y", y);
+			n.getParam("odom/starting_th", th);
 
 			velocity = 0.0;
 			angle = 0.0;
 			last_time = ros::Time::now();
+
+			ROS_INFO("\nRESET TO STARTING PARAMETERS: x=%f, y=%f, th=%f", x, y, th);
 		}
 
+		/// Compute the odometry based on previous position and input values
+		/// The vehicle is approximated to a bicycle model with a 2.8m wheelbase
+		/// The formula used is that of exact odometry, with the assumption of a steering angle
+		/// smaller than 90 degrees.
 		void compute_odometry()
 		{
 			ros::Time current_time = ros::Time::now();
@@ -57,6 +64,7 @@ class pub {
 			}
 		}
 
+		/// Publish the odometry in the standard Odometry message
 		void publish_odometry()
 		{
 			nav_msgs::Odometry odom;
@@ -72,6 +80,7 @@ class pub {
 			odom_pub.publish(odom);
 		}
 
+		/// Publish the odometry in a custom message
 		void publish_custom_odometry()
 		{
 			first_project::Odom odom;
@@ -83,6 +92,7 @@ class pub {
 			custom_odom_pub.publish(odom);
 		}
 
+		/// Publish the odometry in the tf tree
 		void publish_tf() {
 			tf::Transform transform;
 			transform.setOrigin( tf::Vector3(x, y, 0) );
@@ -92,16 +102,18 @@ class pub {
 		}
 
 	public:
+		/// Initialize node by setting up publishers, subscribers and services
 		pub()
 		{
+			reset_state();
 			odom_pub = n.advertise<nav_msgs::Odometry>("odometry", 1000);
 			custom_odom_pub = n.advertise<first_project::Odom>("custom_odometry", 1000);
-			srv = n.advertiseService("reset_odom", &pub::reset, this);
-			sub = n.subscribe("/speed_steer", 1, &pub::callback, this);
-			reset_state();
+			srv = n.advertiseService("reset_odom", &pub::reset_callback, this);
+			sub = n.subscribe("/speed_steer", 1, &pub::odometry_callback, this);
 		}
 
-		void callback(const geometry_msgs::Quaternion::ConstPtr& msg)
+		/// Callback to be run every time input values are provided on the /speed_steer topic
+		void odometry_callback(const geometry_msgs::Quaternion::ConstPtr& msg)
 		{
 			compute_odometry();
 
@@ -113,17 +125,16 @@ class pub {
 			angle = msg->y;
 			last_time = ros::Time::now();
 
-			ROS_INFO("CALLBACK TRIGGERED: x=%f, y=%f, th=%f, v=%f, a=%f", x, y, th, velocity, angle);
+			ROS_INFO("\nCALLBACK TRIGGERED:\n - ODOM : x=%f y=%f th=%f\n - INPUT: v=%f a=%f", x, y, th, velocity, angle);
 		}
 
-		bool reset(
+		/// Callback to be used by the reset service
+		bool reset_callback(
 			first_project::ResetOdom::Request  &req,
 			first_project::ResetOdom::Response &res
 		){
 			reset_state();
-
 			res.resetted = true;
-			ROS_INFO("RESET TO START COORDINATES");
 			return true;
 		}
 
