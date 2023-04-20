@@ -98,7 +98,7 @@ class pub {
 			transform.setOrigin( tf::Vector3(x, y, 0) );
 			transform.setRotation(tf::createQuaternionFromYaw(th));
 
-			br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "odom"));
+			br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "base_link"));
 		}
 
 	public:
