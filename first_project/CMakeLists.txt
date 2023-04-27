@@ -18,7 +18,3 @@ add_executable(odom_node src/pub.cpp)
 add_dependencies(odom_node custom_messages_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 target_link_libraries(odom_node ${catkin_LIBRARIES})
 
-
-#add_executable(sub src/sub.cpp)
-#target_link_libraries(sub ${catkin_LIBRARIES})
-
