@@ -2,7 +2,7 @@
 
   <param name="/use_sim_time" value="true"/>
 
-  <node pkg="first_project" name="odom" type="odom_node" output="screen">
+  <node pkg="first_project" name="odom_node" type="odom_node">
     <param name="starting_x" value="0.0"/>
     <param name="starting_y" value="0.0"/>
     <param name="starting_th" value="0.0"/>
