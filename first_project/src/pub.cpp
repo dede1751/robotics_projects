@@ -28,9 +28,9 @@ class pub {
 
 		/// Reset node state to starting parameters set in launchfile
 		void reset_state() {
-			n.getParam("odom/starting_x", x);
-			n.getParam("odom/starting_y", y);
-			n.getParam("odom/starting_th", th);
+			n.getParam("odom_node/starting_x", x);
+			n.getParam("odom_node/starting_y", y);
+			n.getParam("odom_node/starting_th", th);
 
 			velocity = 0.0;
 			angle = 0.0;
