@@ -55,11 +55,11 @@ class pub {
 				x += velocity * time_delta * cos(th);
 				y += velocity * time_delta * sin(th);
 			} else {
-				float r = tan_angle / WHEEL_BASE;
-				float new_th = th + velocity * r * time_delta;
+				float r = WHEEL_BASE / tan_angle;
+				float new_th = th + velocity * time_delta / r;
 
-				x += (sin(new_th) - sin(th)) / r;
-				y -= (cos(new_th) - cos(th)) / r;
+				x += r * (sin(new_th) - sin(th));
+				y -= r * (cos(new_th) - cos(th));
 				th = new_th;
 			}
 		}
