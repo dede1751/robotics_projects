@@ -21,19 +21,28 @@ private:
 public:
 
     OdomNode() {
-        odometry_sub = n.subscribe("t265/odom", 1, &OdomNode::odom_callback, this);
+        odometry_sub = n.subscribe("t265/odom", 1000, &OdomNode::odom_callback, this);
     }
 
     void odom_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
+        geometry_msgs::TransformStamped position;
+        position.child_frame_id = "base_footprint";
 
-        nav_msgs::Odometry msg = *odom_msg;
+        position.header.stamp = odom_msg->header.stamp;
+        position.header.frame_id = odom_msg->header.frame_id;
 
-        tf::Transform transform;
+
+        position.transform.translation.x = odom_msg->pose.pose.position.x;
+        position.transform.translation.y = odom_msg->pose.pose.position.y;
+        position.transform.translation.z = odom_msg->pose.pose.position.z;
+
+        position.transform.rotation.w = odom_msg->pose.pose.orientation.w;
+        position.transform.rotation.x = odom_msg->pose.pose.orientation.x;
+        position.transform.rotation.y = odom_msg->pose.pose.orientation.y;
+        position.transform.rotation.z = odom_msg->pose.pose.orientation.z;
 
 
-        transform.setOrigin(tf::Vector3(msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z));
-        transform.setRotation(tf::createQuaternionFromYaw(msg.pose.pose.orientation.w));
-        br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "t265"));
+        br.sendTransform(position);
     }
 
 };

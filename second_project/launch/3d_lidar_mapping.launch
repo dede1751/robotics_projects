@@ -4,7 +4,7 @@
     <node pkg="second_project" type="tf_publisher" name="tf_publisher" />
 
 
-    <node pkg="tf" type="static_transform_publisher" name="linker" args=" 0 0 0 0 0 0 1 base_footprint base_link 100"/>
+    <node pkg="tf" type="static_transform_publisher" name="linker" args="0 0 0 0 0 0 1 base_footprint base_link 100"/>
 
 
     <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan">
@@ -32,17 +32,12 @@
     <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
 
         <remap from="scan" to="converted_scan"/>
-        <param name="base_frame" value="base_link"/>
-        <param name="odom_frame" value="odom"/>
+        <param name="base_frame" value="lidar_link"/>
+        <param name="odom_frame" value="t265"/>
 
         <param name="map_update_interval" value="1.0"/>
         <param name="linearUpdate" value="0.5"/>
         <param name="angularUpdate" value="0.1"/>
-
-        <param name="xmin" value="-10.0"/>
-        <param name="ymin" value="-10.0"/>
-        <param name="xmax" value="10.0"/>
-        <param name="ymax" value="10.0"/>
     </node>
 
 
