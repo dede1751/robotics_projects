@@ -58,17 +58,17 @@ int main(int argc, char **argv) {
                     break;
             }
         }
+
+        ROS_INFO("Sending goal");
+        ac.sendGoal(goal);
+
+        ac.waitForResult();
+
+        if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+            ROS_INFO("Hooray, the base moved 1 meter forward");
+        else
+            ROS_INFO("The base failed to move forward 1 meter for some reason");
     }
 
-
-    ROS_INFO("Sending goal");
-    ac.sendGoal(goal);
-
-    ac.waitForResult();
-
-    if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-        ROS_INFO("Hooray, the base moved 1 meter forward");
-    else
-        ROS_INFO("The base failed to move forward 1 meter for some reason");
     return 0;
 }
