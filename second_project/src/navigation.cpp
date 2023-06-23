@@ -5,6 +5,7 @@
 
 typedef actionlib::SimpleActionClient <move_base_msgs::MoveBaseAction> MoveBaseClient;
 
+
 int main(int argc, char **argv) {
 
     ros::init(argc, argv, "simple_navigation_goals");
@@ -26,55 +27,48 @@ int main(int argc, char **argv) {
 
     std::ifstream file("/wp1.csv.txt");
 
-    int j=0;
+    int j = 0;
+
 
     while (file) {
 
+        std::string delimiter = ",";
+
+        size_t pos = 0;
+        std::string token;
         std::string s;
         file >> s;
-        int i = 0;
+        while ((pos = s.find(delimiter)) != std::string::npos) {
 
-        int length = s.length();
-        char* arr = new char[length + 1];
-        strcpy(arr, s.c_str());
+            token = s.substr(0, pos);
+            s.erase(0, pos + delimiter.length());
 
-        // Temporary string used to split the string.
-
-        while (arr[i] != '\0') {
-            if (arr[i] != ',') {
-                std::cout << arr[i];
-                switch(j){
-                    case 0:
-                        j=1;
-                        break;
-                    case 1:
-                        goal.target_pose.pose.position.x = arr[i];
-                        j=2;
-                        break;
-                    case 2:
-                        j=0;
-                        goal.target_pose.pose.orientation.y = arr[i];
-                        break;
-                }
-            } else {
-
-                s.clear();
+            switch (j) {
+                case 0:
+                    goal.target_pose.pose.position.x = stoi(token);
+                    j = 1;
+                    break;
+                case 1:
+                    goal.target_pose.pose.orientation.y = stoi(token);
+                    j = 2;
+                    break;
+                case 2:
+                    j = 0;
+                    goal.target_pose.pose.orientation.w = stoi(token);
+                    break;
             }
-            i++;
         }
-
-
-            ROS_INFO("Sending goal");
-            ac.sendGoal(goal);
-
-            ac.waitForResult();
-
-            if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-                ROS_INFO("Hooray, the base moved 1 meter forward");
-            else
-                ROS_INFO("The base failed to move forward 1 meter for some reason");
-
-        }
-
-        return 0;
     }
+
+
+    ROS_INFO("Sending goal");
+    ac.sendGoal(goal);
+
+    ac.waitForResult();
+
+    if (ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+        ROS_INFO("Hooray, the base moved 1 meter forward");
+    else
+        ROS_INFO("The base failed to move forward 1 meter for some reason");
+    return 0;
+}
