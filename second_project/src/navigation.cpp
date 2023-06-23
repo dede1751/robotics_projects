@@ -8,8 +8,8 @@ typedef actionlib::SimpleActionClient <move_base_msgs::MoveBaseAction> MoveBaseC
 
 int main(int argc, char **argv) {
 
-    ros::init(argc, argv, "simple_navigation_goals");
-
+    ros::init(argc, argv, "navigation");
+    ROS_INFO("Starting node");
     //tell the action client that we want to spin a thread by default
     MoveBaseClient ac("move_base", true);
 
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     goal.target_pose.header.stamp = ros::Time::now();
 
 
-    std::ifstream file("/wp1.csv.txt");
+    std::ifstream file("/wp1.csv");
 
     int j = 0;
 
@@ -39,10 +39,10 @@ int main(int argc, char **argv) {
         std::string s;
         file >> s;
         while ((pos = s.find(delimiter)) != std::string::npos) {
-
             token = s.substr(0, pos);
             s.erase(0, pos + delimiter.length());
 
+            ROS_INFO("sium");
             switch (j) {
                 case 0:
                     goal.target_pose.pose.position.x = stoi(token);
