@@ -19,7 +19,7 @@ define turtlebot position
 
   localization "odom"
 
-  odom_error [0.2 0.2 0.0 0.3 ]
+  odom_error [0.0 0.0 0.0 0.0 ]
 
   size [ 0.4 0.6 0.0 ]
   origin [ 0.0 0.0 0.0 0.0 ]
