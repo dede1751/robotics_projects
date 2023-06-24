@@ -13,6 +13,9 @@ define kinect ranger
   size [ 0.0 0.0 0.0 ]
 )
 
+
+
+
 define turtlebot position
 (
   pose [ 0.0 0.0 0.0 0.0 ]
