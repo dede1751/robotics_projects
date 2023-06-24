@@ -26,11 +26,10 @@ public:
 
     void odom_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
         geometry_msgs::TransformStamped position;
-        position.child_frame_id = "base_footprint";
+        position.child_frame_id = "t265";
 
         position.header.stamp = odom_msg->header.stamp;
-        position.header.frame_id = odom_msg->header.frame_id;
-
+        position.header.frame_id = "odom";
 
         position.transform.translation.x = odom_msg->pose.pose.position.x;
         position.transform.translation.y = odom_msg->pose.pose.position.y;
@@ -41,7 +40,6 @@ public:
         position.transform.rotation.y = odom_msg->pose.pose.orientation.y;
         position.transform.rotation.z = odom_msg->pose.pose.orientation.z;
 
-
         br.sendTransform(position);
     }
 
@@ -50,7 +48,6 @@ public:
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "tf_publisher");
-
     OdomNode node;
 
     ros::spin();

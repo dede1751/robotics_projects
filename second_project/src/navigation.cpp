@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     goal.target_pose.header.stamp = ros::Time::now();
 
 
-    std::ifstream file("/wp1.csv");
+    std::ifstream file("/waypoints.csv");
 
     int j = 0;
 

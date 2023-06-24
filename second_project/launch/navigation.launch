@@ -47,5 +47,5 @@
         <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
     </include>
 
-
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/config_nav.rviz"/>
 </launch>

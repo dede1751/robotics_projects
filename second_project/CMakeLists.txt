@@ -11,5 +11,5 @@ catkin_package()
 ## Build talker and listener
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(tf_publisher src/module.cpp)
+add_executable(tf_publisher src/tf_publisher.cpp)
 target_link_libraries(tf_publisher ${catkin_LIBRARIES})

@@ -1,0 +1,13 @@
+<launch>
+    <param name="/use_sim_time" value="true" />
+
+    <node pkg="second_project" type="tf_publisher" name="tf_publisher" />
+    
+    <remap from="st_scan" to="scan"/>
+
+    <node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
+        <rosparam command="load" file="$(find second_project)/cfg/st_config.yaml" />
+    </node>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/config_mapping.rviz"/>
+</launch>
