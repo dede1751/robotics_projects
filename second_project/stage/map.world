@@ -1,3 +1,5 @@
+include "turtlebot.inc"
+
 define floorplan model
 (
   # sombre, sensible, artistic
@@ -11,7 +13,7 @@ define floorplan model
   gui_outline 0
   gripper_return 0
   fiducial_return 0
-  ranger_return 1
+  ranger_return 1.000
 )
 
 resolution 0.085
@@ -19,18 +21,23 @@ interval_sim 100  # simulation timestep in milliseconds
 
 window
 (
-  size [ 40.0 40.0 ]
-  center [ 0.0 0.0 ]
-  rotate [ 0.0 0.0 ]
-  scale 60
+  size [ 600 700 ]
+  center [ 0.000 0.000 ]
+  rotate [ 0.000 0.000 ]
+  scale 15.000
 )
 
 floorplan
 (
   name "map"
   bitmap "map.png"
-  size [ 18.19 27.88 0.0 ] # 214x328 px
-  pose [  9.55  13.94 0.0 0.0 ]
+  size [ 18.190 27.880 0.000 ] # 214x328 px
+  pose [ -0.422 0.067 0.000 0.000]
 )
 
-
+turtlebot
+(
+  pose [ 0.000 0.000 0.000 0.000 ]
+  name "turtlebot"
+  color "black"
+)
