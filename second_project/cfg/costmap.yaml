@@ -2,7 +2,6 @@
 #robot_radius: 0.20  # distance a circular robot should be clear of the obstacle (kobuki: 0.18)
 # footprint: [[x0, y0], [x1, y1], ... [xn, yn]]  # if the robot is not circular
 footprint: [ [0.3, 0.2], [0.3, -0.2], [-0.3, -0.2], [-0.3, 0.2] ]
-footprint_padding: 0.01
 
 obstacle_layer:
   enabled:              true
@@ -18,3 +17,8 @@ obstacle_layer:
     topic: scan
     marking: true
     clearing: true
+
+inflation_layer:
+  enabled:              true
+  cost_scaling_factor:  10.0  # exponential rate at which the obstacle cost drops off (default: 10)
+  inflation_radius:     0.3  # max. distance from an obstacle at which costs are incurred for planning paths.
