@@ -1,8 +1,7 @@
 <launch>
-    <node name="map_server" pkg="map_server" type="map_server" args="$(find second_project)/stage/map.yaml"/>
-
-    <!-- Name of the map to use and initial position -->
+    <!-- General arguments -->
     <arg name="world_file"     default="$(find second_project)/stage/map.world"/>
+    <arg name="map_file"       default="$(find second_project)/stage/map.yaml"/>
     <arg name="initial_pose_x" default="0.0"/>
     <arg name="initial_pose_y" default="0.0"/>
     <arg name="initial_pose_a" default="0.0"/>
@@ -14,6 +13,8 @@
 
     <param name="/use_sim_time" value="true"/>
 
+    <!--  ***************** Static Map Publisher *****************  -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"/>
 
     <!--  ***************** Robot simulation *****************  -->
     <node pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
@@ -21,7 +22,7 @@
         <remap from="base_scan" to="scan"/>
     </node>
 
-    <!--  ****** amcl *****  -->
+    <!--  ****** AMCL *****  -->
     <node pkg="amcl" type="amcl" name="amcl">
         <param name="use_map_topic"             value="true"/>
 
@@ -32,7 +33,7 @@
         <param name="laser_max_beams"           value="4 500"/>
         <param name="laser_max_range"           value="30.0"/>
         <param name="min_particles"             value="500"/>
-        <param name="max_particles"             value="2000"/>
+        <param name="max_particles"             value="5000"/>
         <param name="kld_err"                   value="0.05"/>
         <param name="kld_z"                     value="0.99"/>
         <param name="odom_alpha1"               value="0.7"/>
@@ -65,25 +66,14 @@
 
     <!--  ************** Navigation  ***************  -->
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-        <param name="global_costmap/global_frame" value="map"/>
-        <param name="global_costmap/robot_base_frame" value="base_link"/>
-
-        <param name="local_costmap/global_frame" value="map"/>
-        <param name="local_costmap/robot_base_frame" value="base_link"/>
-
-        <param name="base_global_planner" value="navfn/NavfnROS" />  <!--   planner  navfn/NavfnROS alternative  carrot_planner/CarrotPlanner -->
-        <param name="planner_frequency" value="1.0" />
-
-        <param name="planner_patience" value="5.0" /> <!-- How long the planner will wait in seconds in an attempt to find a valid plan before space-clearing operations are performed.  -->
-        <rosparam file="$(find second_project)/cfg/local_cm.yaml" command="load" />
-        <rosparam file="$(find second_project)/cfg/global_cm.yaml" command="load" />
         <rosparam file="$(find second_project)/cfg/move_base.yaml" command="load" />
-        <rosparam file="$(find second_project)/cfg/costmap.yaml" command="load" ns="global_costmap" />
-        <rosparam file="$(find second_project)/cfg/costmap.yaml" command="load" ns="local_costmap" />
-        <param name="controller_frequency" value="5.0" />
-        <param name="controller_patience" value="5.0" /> <!-- How long the controller will wait in seconds without receiving a valid control before space-clearing operations are performed.  -->
 
-        <param name="clearing_rotation_allowed" value="false"/>
+        <rosparam file="$(find second_project)/cfg/costmap.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find second_project)/cfg/global_cm.yaml" command="load" />
+        <rosparam file="$(find second_project)/cfg/costmap.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find second_project)/cfg/local_cm.yaml" command="load" />
+
+        <rosparam file="$(find second_project)/cfg/local_planner.yaml" command="load" />
     </node>
 
     <!--  ****** Goals *****  -->

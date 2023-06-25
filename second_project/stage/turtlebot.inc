@@ -16,12 +16,12 @@ define kinect ranger
 define turtlebot position
 (
   pose [ 0.0 0.0 0.0 0.0 ]
-
+  
   localization "odom"
 
   odom_error [0.0 0.0 0.0 0.0 ]
 
-  size [ 0.4 0.6 0.0 ]
+  size [ 0.6 0.4 0.0 ]
   origin [ 0.0 0.0 0.0 0.0 ]
   gui_nose 1
   drive "diff"
