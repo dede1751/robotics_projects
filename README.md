@@ -1,7 +1,7 @@
 # <div align="center"> Projects for the Robotics course at Politecnico di Milano </div>
 
 <p align="center">
-  <img src="./second_project/navigation/navigation.gif">
+  <img src="./second_project/navigation.gif">
 </p>
 
 ## First Project

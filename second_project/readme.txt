@@ -20,3 +20,5 @@ Second Robotics Project -- Andrea Sgobbi, Diego Viganò
     of this to the relatively low quality of the map due to running a single pass over the environment.
     The other main cause is a more conservative approach with robot dimensions and clearances.
   - The waypoints.csv is a roughly accurate simulation of the path within the bags
+  - The local planner seems to throw errors when reaching the final waypoint. This does not happen
+    in the rest of the path and it still reports reaching the goal.
